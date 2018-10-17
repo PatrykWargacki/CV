@@ -13,9 +13,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,8 +102,10 @@ public class FullscreenActivity extends AppCompatActivity {
 		                                                      CameraManager.class),
 		                       ((SurfaceView) mContentView).getHolder().getSurface());
 		try {
-			start.doStuff();
-		}catch (Exception e){}
+			start.doStuff(this);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -123,19 +127,15 @@ public class FullscreenActivity extends AppCompatActivity {
 			}
 		});
 
+		//Init actions after activity view is created
+		initAfterCreateView();
+
 		// Upon interacting with UI controls, delay any scheduled hide()
 		// operations to prevent the jarring behavior of controls going away
 		// while interacting with the UI.
 		findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
-		
-		if(permissions(Manifest.permission.CAMERA
-//		               ,Manifest.permission.CAPTURE_VIDEO_OUTPUT,
-//		               Manifest.permission.LOCATION_HARDWARE,
-//		               Manifest.permission.ACCESS_COARSE_LOCATION,
-//		               Manifest.permission.ACCESS_FINE_LOCATION
-		              )) doStuff();
 	}
-	
+
 	@Override
 	public void onRequestPermissionsResult(int requestCode,
 	                                       @NonNull
@@ -218,5 +218,22 @@ public class FullscreenActivity extends AppCompatActivity {
 	private void delayedHide(int delayMillis) {
 		mHideHandler.removeCallbacks(mHideRunnable);
 		mHideHandler.postDelayed(mHideRunnable, delayMillis);
+	}
+
+	//Initialize actions to be performed after activity view is created
+	private void initAfterCreateView(){
+		//Get activity root layout
+		final View activityView = findViewById(android.R.id.content);
+		//Add listener to
+		activityView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				//Perform actions after layout is created
+				if(permissions(Manifest.permission.CAMERA))
+					doStuff();
+				//Remove listener after view is created
+				activityView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+			}
+		});
 	}
 }
