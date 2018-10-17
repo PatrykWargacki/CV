@@ -1,0 +1,29 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    
+
+
+    defaultConfig {
+        applicationId "ar.wargus.cv.app"
+        minSdkVersion 26
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+
+    }
+
+    buildTypes {
+       release {
+           minifyEnabled false
+       }
+    }
+
+}
+
+dependencies {
+    implementation project(':core')
+    implementation project(':base')
+}
