@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ar.wargus.cv.app" />
+<manifest package="ar.wargus.cv.app" />
