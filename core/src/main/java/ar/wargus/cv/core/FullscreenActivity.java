@@ -46,7 +46,8 @@ public class FullscreenActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		//Set content view inflates activity view from xml layout file defined in R.layout
+		setContentView(R.layout.activity_fullscreen);
 		mContentView = findViewById(R.id.fullscreen_content);
 
 		//Init actions after activity view is created

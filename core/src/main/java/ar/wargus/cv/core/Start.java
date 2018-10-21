@@ -42,6 +42,7 @@ public class Start {
 		@Override
 		public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
 			try {
+				surfaceTextureView = new Surface(surface);
 				setupCamera(width, height);
 				openCamera();
 			} catch (CameraAccessException e) {
@@ -101,10 +102,13 @@ public class Start {
 		this.fullscreenActivity = fullscreenActivity;
 		cameraManager = (CameraManager) fullscreenActivity.getSystemService(Context.CAMERA_SERVICE);
 		textureView = fullscreenActivity.findViewById(R.id.fullscreen_content);
-		
-		if(textureView != null
-		   && textureView.getSurfaceTexture() != null)
-			surfaceTextureView = new Surface(textureView.getSurfaceTexture());
+		textureView.setSurfaceTextureListener(surfaceTextureListener);
+
+		//getSurfaceTexture view will always return null here because it's not ready
+//		if(textureView != null
+//		   && textureView.getSurfaceTexture() != null)
+//			surfaceTextureView = new Surface(textureView.getSurfaceTexture());
+
 	}
 	
 	private void setupCamera(int width, int height) throws CameraAccessException {
